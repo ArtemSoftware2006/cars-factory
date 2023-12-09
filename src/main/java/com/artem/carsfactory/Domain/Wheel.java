@@ -5,6 +5,8 @@ import java.util.Set;
 
 import org.hibernate.annotations.Collate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,10 +24,38 @@ public class Wheel {
     @Column(name = "wheel_id")
     private Long wheelId;
     private String whellSize;
+    @JsonIgnore
     @OneToMany(mappedBy = "wheelId", cascade = CascadeType.ALL)
     private List<Car> cars;
 
+    public Wheel() {
+        
+    }
     public Wheel(String whellSize) {
         this.whellSize = whellSize;
+    }
+
+    public Long getWheelId() {
+        return wheelId;
+    }
+
+    public void setWheelId(Long wheelId) {
+        this.wheelId = wheelId;
+    }
+
+    public String getWhellSize() {
+        return whellSize;
+    }
+
+    public void setWhellSize(String whellSize) {
+        this.whellSize = whellSize;
+    }
+
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
     }
 }

@@ -4,7 +4,7 @@ spring:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
   datasource:
     url: jdbc:postgresql://localhost:5433/cars-factory
     username: postgres

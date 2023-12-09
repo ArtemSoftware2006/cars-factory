@@ -24,4 +24,8 @@ public class Body {
     @OneToMany(mappedBy = "bodyId", cascade = CascadeType.ALL)
     private List<Car> cars;
 
+    public Body(String bodyType) {
+        this.bodyType = bodyType;
+    }
+
 }

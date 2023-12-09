@@ -24,4 +24,8 @@ public class Wheel {
     private String whellSize;
     @OneToMany(mappedBy = "wheelId", cascade = CascadeType.ALL)
     private List<Car> cars;
+
+    public Wheel(String whellSize) {
+        this.whellSize = whellSize;
+    }
 }

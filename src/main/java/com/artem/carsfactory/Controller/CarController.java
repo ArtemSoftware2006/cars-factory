@@ -1,7 +1,6 @@
 package com.artem.carsfactory.Controller;
 
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.function.EntityResponse;
 
 import com.artem.carsfactory.Domain.Body;
 import com.artem.carsfactory.Domain.Car;
@@ -11,12 +10,12 @@ import com.artem.carsfactory.Repository.BodyRepository;
 import com.artem.carsfactory.Repository.CarRepository;
 import com.artem.carsfactory.Repository.WheelRepository;
 
-import jakarta.websocket.server.PathParam;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -45,16 +44,19 @@ public class CarController {
     }   
 
     @GetMapping("/bodies")
+    @Cacheable(cacheNames = "bodiesCache")
     public ResponseEntity<List<Body>> getBodies() {
         return ResponseEntity.ok(bodyRepository.findAll());
     }
 
     @GetMapping("/wheels")
+    @Cacheable(cacheNames = "wheelsCache")
     public ResponseEntity<List<Wheel>> getWheels() {
         return ResponseEntity.ok(wheelRepository.findAll());
     }
 
     @GetMapping("/car/{id}")
+    @Cacheable(cacheNames = "carsCache", key = "#id")
     public ResponseEntity<Car> getCar(@PathVariable Long id) {
         Optional<Car> car = carRepository.findById(id);
 
@@ -79,8 +81,9 @@ public class CarController {
     }
 
     @GetMapping("/cars")
+    @Cacheable(cacheNames = "carsCache")
     public ResponseEntity<List<Car>> getCars(@RequestParam int page, 
-        @RequestParam int pageSize) {
+            @RequestParam int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
 
         HttpHeaders responseHeaders = new HttpHeaders();
